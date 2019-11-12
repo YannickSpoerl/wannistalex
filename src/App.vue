@@ -5,24 +5,26 @@
       <v-spacer></v-spacer>
     </v-app-bar>
     <v-content>
-      <div>
-        <TableComponent style="left:0; width=50%"/>
-              <BetComponent style="right:0; width=50%; color:red"/>
-
-      </div>
+      <v-row no-gutters>
+        <v-col cols="6">
+          <TableComponent/>
+        </v-col>
+        <v-col cols="6">
+          <BetComponent/>
+        </v-col>
+      </v-row>
     </v-content>
     <v-footer dark padless height="auto">
-            <v-card class="flex primary" flat tile>
-                <v-card-title>
-                    <v-spacer></v-spacer>
-                    <v-btn v-for="icon in icons" :key="icon.link" class="mx-3" dark icon v-bind:href="icon.link"
-                        target="_blank">
-                        <v-icon size="24px">{{ icon.icon }}</v-icon>
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                </v-card-title>
-            </v-card>
-        </v-footer>
+      <v-card class="flex primary" flat tile>
+        <v-card-title>
+          <v-spacer></v-spacer>
+          <v-btn v-for="icon in icons" :key="icon.link" class="mx-3" dark icon v-bind:href="icon.link" target="_blank">
+            <v-icon size="24px">{{ icon.icon }}</v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-title>
+      </v-card>
+    </v-footer>
   </v-app>
 </template>
 
