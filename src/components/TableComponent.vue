@@ -46,12 +46,14 @@
         small
         class="mr-2"
         @click="editSlot(item)"
+        :disabled="alreadyArrived"
       >
         fas fa-pencil-alt
       </v-icon>
       <v-icon
         small
         @click="deleteSlot(item)"
+        :disabled="alreadyArrived"
       >
         fa fa-trash
       </v-icon>
@@ -65,7 +67,7 @@ import {db} from '../db'
 
 export default {
   name: 'TableComponent',
-  props: ['bets'],
+  props: ['bets', 'alreadyArrived'],
   data() {
       return {
           headers: [

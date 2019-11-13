@@ -55,7 +55,7 @@ import {db, TimeStamp} from '../db'
 
 export default {
   name: 'BetComponent',
-  props: ['bets'],
+  props: ['bets', 'alreadyArrived'],
   data() { return {
     liveTime: '',
     timeCounter: undefined,
@@ -95,6 +95,9 @@ export default {
       }, 1000)
     },
     getSlot(time) {
+      if(time === undefined){
+        return '/'
+      }
       let hours = time.split(':')[0]
       if(hours < 8 || hours > 17) {
         return '/'
@@ -153,17 +156,6 @@ export default {
     activeSlot () {
       return this.getSlot(this.liveTime)
     },
-    alreadyArrived() {
-      let now = new Date()
-      let todaysArrivals = []
-      this.arrivals.forEach(function(arrival) {
-        let timeStamp = new Date(arrival.time.seconds * 1000)
-        if(timeStamp.getFullYear() === now.getFullYear() && timeStamp.getMonth() === now.getMonth() && timeStamp.getDate() === now.getDate()) {
-          todaysArrivals.push(timeStamp)
-        }
-      })
-      return (todaysArrivals.length === 1)
-    },
     arrivalTime() {
       let self = this
       let now = new Date()
@@ -220,6 +212,9 @@ export default {
       return this.getNearestBetIndex(new Date())
     },
     winner () {
+      if(this.arrivalTime === undefined) {
+        return ''
+      }
       if(this.bets.length < 1){
         return {
           bettor: 'Niemand',

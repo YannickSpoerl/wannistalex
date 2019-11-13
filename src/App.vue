@@ -7,10 +7,10 @@
     <v-content>
       <v-row no-gutters>
         <v-col cols="6">
-          <TableComponent :bets="sortSlots(bets)"></TableComponent>
+          <TableComponent :bets="sortSlots(bets)" :alreadyArrived="alreadyArrived"></TableComponent>
         </v-col>
         <v-col cols="6">
-          <BetComponent :bets="sortSlots(bets)"></BetComponent>
+          <BetComponent :bets="sortSlots(bets)" :alreadyArrived="alreadyArrived"></BetComponent>
         </v-col>
       </v-row>
     </v-content>
@@ -48,10 +48,12 @@ export default {
                 { icon: 'fab fa-github', link: "https://github.com/YannickSpoerl" },
                 { icon: 'fab fa-spotify', link: "https://open.spotify.com/playlist/454IGseDQQiMdW5y8DReBL?si=2O_FC2R4SF60hxiXnp2KoA" }
             ],
-    bets: []
+    bets: [],
+    arrivals: []
   }),
   firestore: {
-    bets: db.collection('bets')
+    bets: db.collection('bets'),
+    arrivals: db.collection('arrivals')
   },
   methods: {
     sortSlots (unsortedBets) {
@@ -67,6 +69,19 @@ export default {
         }
       })
     }
+  },
+  computed: {
+    alreadyArrived() {
+      let now = new Date()
+      let todaysArrivals = []
+      this.arrivals.forEach(function(arrival) {
+        let timeStamp = new Date(arrival.time.seconds * 1000)
+        if(timeStamp.getFullYear() === now.getFullYear() && timeStamp.getMonth() === now.getMonth() && timeStamp.getDate() === now.getDate()) {
+          todaysArrivals.push(timeStamp)
+        }
+      })
+      return (todaysArrivals.length === 1)
+    },
   }
 };
 </script>
