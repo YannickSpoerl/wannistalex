@@ -30,7 +30,7 @@ export default {
       }
       timeString += seconds
       self.liveTime = timeString
-    })
+    }, 1000)
   }
 }
 </script>
