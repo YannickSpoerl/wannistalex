@@ -38,6 +38,11 @@
       <v-row class="justify-center">
         <p class="display-1">Slot: <strong>{{getSlot(arrivalTime)}}</strong></p>
       </v-row>
+      <v-card color="primary" dark class="mx-auto" max-width="600">
+        <v-card-title class="display-1">{{winner.bettor}} gewinnt!</v-card-title>
+        <v-card-subtitle class="headline">{{winner.slot}} Uhr</v-card-subtitle>
+        <v-card-text class="body-1">Gewinn: 5 Euro</v-card-text>
+      </v-card>
     </div>
   </v-container>
 </template>
@@ -102,6 +107,40 @@ export default {
       } else {
         return hours + ':' + '00' + ' - ' + hours + ':' + '15'
       }
+    },
+    getNearestBetIndex(date) {
+      let index = 0
+      let distance = 86400000
+      for(let i = 0; i < this.bets.length; i++) {
+        let slot = this.bets[i].slot
+        if(this.activeSlot === slot) {
+          index = i
+          distance = 0
+        } else {
+          let startDate = new Date()
+          let hours = slot.split(' - ')[0].split(':')[0]
+          let minutes = slot.split(' - ')[0].split(':')[1]
+          startDate.setUTCHours(parseInt(hours))
+          startDate.setMinutes(parseInt(minutes))
+          let endDate = new Date()
+          hours = slot.split(' - ')[1].split(':')[0]
+          minutes = slot.split(' - ')[1].split(':')[1]
+          endDate.setUTCHours(parseInt(hours))
+          endDate.setMinutes(parseInt(minutes))
+          if(Math.abs(startDate - date) > Math.abs(endDate - date)){
+            if(Math.abs(endDate - date) < distance){
+              distance = Math.abs(endDate - date)
+              index = i
+            }
+          } else {
+            if(Math.abs(startDate - date) < distance){
+              distance = Math.abs(startDate - date)
+              index = i
+            }
+          }
+        }
+      }
+      return index
     }
   },
   beforeMount(){
@@ -175,39 +214,15 @@ export default {
       return this.bets[this.nearestBettorIndex + 1]
     },
     nearestBettorIndex() {
-      let index = 0
-      let distance = 86400000
-      let date = new Date()
-      for(let i = 0; i < this.bets.length; i++) {
-        let slot = this.bets[i].slot
-        if(this.activeSlot === slot) {
-          index = i
-          distance = 0
-        } else {
-          let startDate = new Date()
-          let hours = slot.split(' - ')[0].split(':')[0]
-          let minutes = slot.split(' - ')[0].split(':')[1]
-          startDate.setUTCHours(parseInt(hours))
-          startDate.setMinutes(parseInt(minutes))
-          let endDate = new Date()
-          hours = slot.split(' - ')[1].split(':')[0]
-          minutes = slot.split(' - ')[1].split(':')[1]
-          endDate.setUTCHours(parseInt(hours))
-          endDate.setMinutes(parseInt(minutes))
-          if(Math.abs(startDate - date) > Math.abs(endDate - date)){
-            if(Math.abs(endDate - date) < distance){
-              distance = Math.abs(endDate - date)
-              index = i
-            }
-          } else {
-            if(Math.abs(startDate - date) < distance){
-              distance = Math.abs(startDate - date)
-              index = i
-            }
-          }
-        }
-      }
-      return index
+      return this.getNearestBetIndex(new Date())
+    },
+    winner () {
+      let now = new Date()
+      let hour = this.arrivalTime.split(':')[0]
+      let minutes = this.arrivalTime.split(':')[1]
+      now.setUTCHours(parseInt(hour))
+      now.setUTCMinutes(parseInt(minutes))
+      return this.bets[this.getNearestBetIndex(now)]
     }
   }
 }
