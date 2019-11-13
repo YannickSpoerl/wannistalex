@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-data-table :headers="headers" :items="sortSlots(bets)" class="elevation-1" hide-default-footer>
+    <v-data-table :headers="headers" :items="bets" class="elevation-1" hide-default-footer>
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-dialog v-model="editDialogOpen" max-width="600px">
@@ -65,9 +65,9 @@ import {db} from '../db'
 
 export default {
   name: 'TableComponent',
+  props: ['bets'],
   data() {
       return {
-          bets: [],
           headers: [
             { text: 'Zeitslot', align: 'left', value: 'slot', sortable: false },
             { text: 'Wettender', value: 'bettor', sortable: false },
@@ -76,9 +76,6 @@ export default {
           editDialogOpen: false,
           editedSlot: undefined
       }
-  },
-  firestore: {
-    bets: db.collection('bets')
   },
   beforeMount () {
     this.resetEditedSlot()
@@ -131,19 +128,6 @@ export default {
         }
       })
       return true
-    },
-    sortSlots (unsortedBets) {
-      let sortedBets = unsortedBets.slice()
-      return sortedBets.sort(function (slot1, slot2) {
-        let slotTime1 = slot1.slot.split(' - ')[0]
-        let slotTime2 = slot2.slot.split(' - ')[0]
-        if(slotTime1.split(':')[0] !== slotTime2.split(':')[0]) {
-          return slotTime1.split(':')[0] - slotTime2.split(':')[0]
-        }
-        else if (slotTime1.split(':')[1] !== slotTime2.split(':')[1]) {
-          return slotTime1.split(':')[1] - slotTime2.split(':')[1]
-        }
-      })
     },
     checkSlotExistence(slot) {
       let self = this

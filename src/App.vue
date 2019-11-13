@@ -7,10 +7,10 @@
     <v-content>
       <v-row no-gutters>
         <v-col cols="6">
-          <TableComponent/>
+          <TableComponent :bets="sortSlots(bets)"></TableComponent>
         </v-col>
         <v-col cols="6">
-          <BetComponent/>
+          <BetComponent :bets="sortSlots(bets)"></BetComponent>
         </v-col>
       </v-row>
     </v-content>
@@ -31,6 +31,7 @@
 <script>
 import BetComponent from './components/BetComponent'
 import TableComponent from './components/TableComponent'
+import {db} from './db'
 
 export default {
   name: 'App',
@@ -46,7 +47,26 @@ export default {
                 { icon: 'fas fa-user', link: "http://yannickspoerl.me" },
                 { icon: 'fab fa-github', link: "https://github.com/YannickSpoerl" },
                 { icon: 'fab fa-spotify', link: "https://open.spotify.com/playlist/454IGseDQQiMdW5y8DReBL?si=2O_FC2R4SF60hxiXnp2KoA" }
-            ]
+            ],
+    bets: []
   }),
+  firestore: {
+    bets: db.collection('bets')
+  },
+  methods: {
+    sortSlots (unsortedBets) {
+      let sortedBets = unsortedBets.slice()
+      return sortedBets.sort(function (slot1, slot2) {
+        let slotTime1 = slot1.slot.split(' - ')[0]
+        let slotTime2 = slot2.slot.split(' - ')[0]
+        if(slotTime1.split(':')[0] !== slotTime2.split(':')[0]) {
+          return slotTime1.split(':')[0] - slotTime2.split(':')[0]
+        }
+        else if (slotTime1.split(':')[1] !== slotTime2.split(':')[1]) {
+          return slotTime1.split(':')[1] - slotTime2.split(':')[1]
+        }
+      })
+    }
+  }
 };
 </script>

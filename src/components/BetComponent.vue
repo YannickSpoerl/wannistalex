@@ -9,9 +9,27 @@
           <v-icon>fas fa-user-clock</v-icon>
           Alex ist da!</v-btn>
       </v-row>
-      <v-row class="pa-4 justify-center">
+      <v-row class="pa-3 justify-center">
         <p class="display-1">aktiver Slot: <strong>{{activeSlot}}</strong></p>
       </v-row>
+      <v-stepper alt-labels class="mt-12" value=" ">
+        <v-stepper-header>
+          <v-stepper-step step="">
+            {{previousBettor.bettor}}
+            <small class="pa-1">{{previousBettor.slot}}</small>
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step step=" ">
+            {{currentBettor.bettor}}
+            <small class="pa-1">{{currentBettor.slot}}</small>
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step step="">
+            {{nextBettor.bettor}}
+            <small class="pa-1">{{nextBettor.slot}}</small>
+          </v-stepper-step>
+        </v-stepper-header>
+      </v-stepper>
     </div>
     <div v-if="alreadyArrived">
       <v-row class="justify-center">
@@ -29,14 +47,15 @@ import {db, TimeStamp} from '../db'
 
 export default {
   name: 'BetComponent',
+  props: ['bets'],
   data() { return {
     liveTime: '',
     timeCounter: undefined,
-    arrivals: []
+    arrivals: [],
     }
   },
   firestore: {
-    arrivals: db.collection('arrivals')
+    arrivals: db.collection('arrivals'),
   },
   methods: {
     getTimeString(now){
@@ -115,6 +134,80 @@ export default {
         }
       })
       return time
+    },
+    previousBettor() {
+      if(this.bets.length < 1){
+        return {
+          bettor: 'Kein Gebote',
+          slot: ' '
+        }
+      }
+      if(this.nearestBettorIndex === 0){
+        return {
+          bettor: 'Kein vorhergehender Bieter',
+          slot: ' '
+        }
+      }
+      return this.bets[this.nearestBettorIndex - 1]
+    },
+    currentBettor() {
+      if(this.bets.length < 1){
+        return {
+          bettor: 'Keine Gebote',
+          slot: ' '
+        }
+      }
+      return this.bets[this.nearestBettorIndex]
+    },
+    nextBettor() {
+      if(this.bets.length < 1){
+        return {
+          bettor: 'Keine Gebote',
+          slot: ' '
+        }
+      }
+      if(this.nearestBettorIndex === (this.bets.length -1)){
+        return {
+          bettor: 'Kein nachfolgender Bieter',
+          slot: ' '
+        }
+      }
+      return this.bets[this.nearestBettorIndex + 1]
+    },
+    nearestBettorIndex() {
+      let index = 0
+      let distance = 86400000
+      let date = new Date()
+      for(let i = 0; i < this.bets.length; i++) {
+        let slot = this.bets[i].slot
+        if(this.activeSlot === slot) {
+          index = i
+          distance = 0
+        } else {
+          let startDate = new Date()
+          let hours = slot.split(' - ')[0].split(':')[0]
+          let minutes = slot.split(' - ')[0].split(':')[1]
+          startDate.setUTCHours(parseInt(hours))
+          startDate.setMinutes(parseInt(minutes))
+          let endDate = new Date()
+          hours = slot.split(' - ')[1].split(':')[0]
+          minutes = slot.split(' - ')[1].split(':')[1]
+          endDate.setUTCHours(parseInt(hours))
+          endDate.setMinutes(parseInt(minutes))
+          if(Math.abs(startDate - date) > Math.abs(endDate - date)){
+            if(Math.abs(endDate - date) < distance){
+              distance = Math.abs(endDate - date)
+              index = i
+            }
+          } else {
+            if(Math.abs(startDate - date) < distance){
+              distance = Math.abs(startDate - date)
+              index = i
+            }
+          }
+        }
+      }
+      return index
     }
   }
 }
