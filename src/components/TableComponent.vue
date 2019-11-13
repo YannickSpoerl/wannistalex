@@ -32,7 +32,6 @@
                 </v-row>
               </v-container>
             </v-card-text>
-
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn :disabled="!betValid(editedSlot)" color="primary" @click="saveSlot(editedSlot)">Speichern</v-btn>
@@ -90,7 +89,7 @@ export default {
       this.editDialogOpen = true
     },
     saveSlot (slot){
-      if(slot.id !== '') {
+      if(slot.id !== undefined) {
         db.collection('bets').doc(slot.id).set(slot)
       } else {
         db.collection('bets').add(slot)
@@ -109,8 +108,7 @@ export default {
             slot: "",
             bettor: "",
             amount: "",
-            subject: "",
-            id: ""
+            subject: "Alex"
           }
     },
     betValid (bet) {
@@ -126,6 +124,11 @@ export default {
       if(isNaN(bet.amount) || bet.amount === '' || bet.amount <= 0.5){
         return false
       }
+      this.slotList.forEach(function(slot){
+        if(slot.slot === bet.slot) {
+          return !(slot.id === bet.id)
+        }
+      })
       return true
     },
     sortSlots (unsortedBets) {
@@ -140,6 +143,15 @@ export default {
           return slotTime1.split(':')[1] - slotTime2.split(':')[1]
         }
       })
+    },
+    checkSlotExistence(slot) {
+      let slotExists = false
+        this.bets.forEach(function(bet){
+          if(bet.slot === slot.slot && bet.id !== slot.id){
+            slotExists = true
+          }
+        })
+      return slotExists
     }
   },
   computed: {
@@ -150,35 +162,41 @@ export default {
       return this.editedSlot.slot + ' bearbeiten'
     },
     slotList () {
+      let self = this
+      if(!this.bets){
+        return []
+      }
       let slots = []
       for (let i = 8; i < 18; i++) {
-        slots.push({
+        let hourSlots = [] 
+        hourSlots.push({
             slot: i + ':00 - ' + i + ':15',
             bettor: "",
             amount: "",
-            subject: "",
-            id: ""
+            subject: "Alex"
           })
-        slots.push({
+        hourSlots.push({
           slot: i + ':15 - ' + i + ':30',
           bettor: "",
           amount: "",
-          subject: "",
-          id: ""
+          subject: "Alex"
         })
-        slots.push({
+        hourSlots.push({
           slot: i + ':30 - ' + i + ':45',
           bettor: "",
           amount: "",
-          subject: "",
-          id: ""
+          subject: "Alex"
         })
-        slots.push({
+        hourSlots.push({
           slot: i + ':45 - ' + (i + 1) + ':00',
           bettor: "",
           amount: "",
-          subject: "",
-          id: ""
+          subject: "Alex",
+        })
+        hourSlots.forEach(function(slot){
+          if(!self.checkSlotExistence(slot)){
+            slots.push(slot)
+          }
         })
       }
       return slots
