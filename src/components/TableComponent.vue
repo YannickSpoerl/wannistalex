@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    {{bets[0]}}
     <v-data-table :headers="headers" :items="sortSlots(bets)" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat color="white">
@@ -89,7 +90,7 @@ export default {
       this.editDialogOpen = true
     },
     saveSlot (slot){
-      if(slot.id !== undefined) {
+      if(slot.id !== '') {
         db.collection('bets').doc(slot.id).set(slot)
       } else {
         db.collection('bets').add(slot)
@@ -108,7 +109,8 @@ export default {
             slot: "",
             bettor: "",
             amount: "",
-            subject: "Alex"
+            subject: "Alex",
+            id: ''
           }
     },
     betValid (bet) {
@@ -134,7 +136,7 @@ export default {
     sortSlots (unsortedBets) {
       let sortedBets = unsortedBets.slice()
       return sortedBets.sort(function (slot1, slot2) {
-        let slotTime1 = slot1.slot.split(' - ')[0].split(':')[0]
+        let slotTime1 = slot1.slot.split(' - ')[0]
         let slotTime2 = slot2.slot.split(' - ')[0]
         if(slotTime1.split(':')[0] !== slotTime2.split(':')[0]) {
           return slotTime1.split(':')[0] - slotTime2.split(':')[0]
@@ -162,7 +164,6 @@ export default {
       return this.editedSlot.slot + ' bearbeiten'
     },
     slotList () {
-      let self = this
       if(!this.bets){
         return []
       }
@@ -171,28 +172,33 @@ export default {
         let hourSlots = [] 
         hourSlots.push({
             slot: i + ':00 - ' + i + ':15',
-            bettor: "",
-            amount: "",
-            subject: "Alex"
+            bettor: '',
+            amount: '',
+            subject: "Alex",
+            id: ''
           })
         hourSlots.push({
           slot: i + ':15 - ' + i + ':30',
           bettor: "",
           amount: "",
-          subject: "Alex"
+          subject: "Alex",
+          id: ''
         })
         hourSlots.push({
           slot: i + ':30 - ' + i + ':45',
           bettor: "",
           amount: "",
-          subject: "Alex"
+          subject: 'Alex',
+          id: ''
         })
         hourSlots.push({
           slot: i + ':45 - ' + (i + 1) + ':00',
           bettor: "",
           amount: "",
           subject: "Alex",
+          id: ''
         })
+        let self = this
         hourSlots.forEach(function(slot){
           if(!self.checkSlotExistence(slot)){
             slots.push(slot)
