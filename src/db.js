@@ -14,5 +14,5 @@ export const db = firebase
   .initializeApp(config)
   .firestore()
 
-const { bets } = firebase.firestore
-export { bets }
+const TimeStamp  = firebase.firestore.Timestamp
+export { TimeStamp }
