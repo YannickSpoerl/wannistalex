@@ -12,6 +12,9 @@
       <v-row class="pa-3 justify-center">
         <p class="display-1">aktiver Slot: <strong>{{activeSlot}}</strong></p>
       </v-row>
+      <v-row class="pa-3 justify-center">
+        <p class="display-1">Pot: <strong>{{pot}}€</strong></p>
+      </v-row>
       <v-stepper alt-labels class="mt-12" value=" ">
         <v-stepper-header>
           <v-stepper-step step="">
@@ -40,8 +43,8 @@
       </v-row>
       <v-card color="primary" dark class="mx-auto" max-width="600">
         <v-card-title class="display-1">{{winner.bettor}} gewinnt!</v-card-title>
-        <v-card-subtitle class="headline">{{winner.slot}} Uhr</v-card-subtitle>
-        <v-card-text class="body-1">Gewinn: 5 Euro</v-card-text>
+        <v-card-subtitle class="headline">{{winner.slot}}</v-card-subtitle>
+        <v-card-text class="body-1">Gewinn: {{pot}}€</v-card-text>
       </v-card>
     </div>
   </v-container>
@@ -217,12 +220,25 @@ export default {
       return this.getNearestBetIndex(new Date())
     },
     winner () {
+      if(this.bets.length < 1){
+        return {
+          bettor: 'Niemand',
+          slot: this.getSlot(this.arrivalTime)
+        }
+      }
       let now = new Date()
       let hour = this.arrivalTime.split(':')[0]
       let minutes = this.arrivalTime.split(':')[1]
       now.setUTCHours(parseInt(hour))
       now.setUTCMinutes(parseInt(minutes))
       return this.bets[this.getNearestBetIndex(now)]
+    },
+    pot () {
+      let pot = 0
+      this.bets.forEach(function(bet){
+        pot += parseInt(bet.amount)
+      })
+      return pot
     }
   }
 }
