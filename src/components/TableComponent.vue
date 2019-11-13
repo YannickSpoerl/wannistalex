@@ -1,7 +1,6 @@
 <template>
   <v-container>
-    {{bets[0]}}
-    <v-data-table :headers="headers" :items="sortSlots(bets)" class="elevation-1">
+    <v-data-table :headers="headers" :items="sortSlots(bets)" class="elevation-1" hide-default-footer>
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-dialog v-model="editDialogOpen" max-width="600px">
@@ -147,9 +146,10 @@ export default {
       })
     },
     checkSlotExistence(slot) {
+      let self = this
       let slotExists = false
         this.bets.forEach(function(bet){
-          if(bet.slot === slot.slot && bet.id !== slot.id){
+          if(bet.slot === slot.slot && bet.id !== self.editedSlot.id){
             slotExists = true
           }
         })
