@@ -12,9 +12,6 @@
       <v-row class="pa-3 justify-center">
         <p class="display-1">aktiver Slot: <strong>{{activeSlot}}</strong></p>
       </v-row>
-      <v-row class="pa-3 justify-center">
-        <p class="display-1">Pot: <strong>{{pot}}€</strong></p>
-      </v-row>
       <v-stepper alt-labels class="mt-12" value=" ">
         <v-stepper-header>
           <v-stepper-step step="">
@@ -227,13 +224,6 @@ export default {
       now.setUTCHours(parseInt(hour))
       now.setUTCMinutes(parseInt(minutes))
       return this.bets[this.getNearestBetIndex(now)]
-    },
-    pot () {
-      let pot = 0
-      this.bets.forEach(function(bet){
-        pot += parseInt(bet.amount)
-      })
-      return pot
     }
   }
 }

@@ -58,7 +58,21 @@
         fa fa-trash
       </v-icon>
     </template>
-  </v-data-table>
+    </v-data-table>
+    <v-divider style="padding:1em"></v-divider>
+    <v-row >
+      <v-col cols="6">
+        <v-row class="justify-center">
+          <p class="headline pa-2">Pot: <strong>{{pot}}€</strong></p>
+        </v-row>
+        <v-row class="justify-center">
+          <v-data-table :headers="overvieHeaders" :items="overview" class="elevation-1" hide-default-footer></v-data-table>
+        </v-row>
+      </v-col>
+      <v-col cols="6">
+        something cool soon
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -73,8 +87,11 @@ export default {
           headers: [
             { text: 'Zeitslot', align: 'left', value: 'slot', sortable: false },
             { text: 'Wettender', value: 'bettor', sortable: false },
-            { text: 'Einsatz in €', value: 'amount', sortable: false },
             { text: 'Aktion', value: 'action', sortable: false }],
+          overvieHeaders: [
+            { text: 'Wettender', value: 'bettor', sortable: false },
+            { text: 'Slots', value: 'numberOfSlots', sortable: true },
+            { text: 'Gesamteinsatz in €', value: 'totalAmount', sortable: true }],
           editDialogOpen: false,
           editedSlot: undefined
       }
@@ -192,6 +209,35 @@ export default {
         })
       }
       return slots
+    },
+    overview () {
+      let names = new Map()
+      this.bets.forEach(function(bet){
+        if(!names.has(bet.bettor)){
+          names.set(bet.bettor,{
+            numberOfSlots: 0,
+            totalAmount: 0
+          })
+        }
+        names.get(bet.bettor).numberOfSlots +=1
+        names.get(bet.bettor).totalAmount += 1
+      })
+      let array = []
+      names.forEach(function(value, key){
+        array.push({
+          bettor: key,
+          numberOfSlots: value.numberOfSlots,
+          totalAmount: value.totalAmount
+        })
+      })
+      return array
+    },
+    pot () {
+      let pot = 0
+      this.bets.forEach(function(bet){
+        pot += parseInt(bet.amount)
+      })
+      return pot
     }
   }
 };
