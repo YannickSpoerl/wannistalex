@@ -63,14 +63,19 @@
     <v-row >
       <v-col cols="6">
         <v-row class="justify-center">
-          <p class="headline pa-2">Pot: <strong>{{pot}}€</strong></p>
+          <p class="headline pa-2">€ Pot: <strong>{{pot}}</strong></p>
         </v-row>
         <v-row class="justify-center">
           <v-data-table :headers="overvieHeaders" :items="overview" class="elevation-1" hide-default-footer></v-data-table>
         </v-row>
       </v-col>
       <v-col cols="6">
-        something cool soon
+        <v-row class="justify-center">
+          <p class="headline pa-2"># Wetten: <strong>{{bets.length}}</strong></p>
+        </v-row>
+        <v-row class="justify-center">
+          <ChartComponent :bets="bets" :slots="generateSlots()"></ChartComponent>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
@@ -78,10 +83,12 @@
 
 <script>
 import {db} from '../db'
+import ChartComponent from './ChartComponent'
 
 export default {
   name: 'TableComponent',
   props: ['bets', 'alreadyArrived'],
+   components: { ChartComponent },
   data() {
       return {
           headers: [
@@ -157,6 +164,40 @@ export default {
           }
         })
       return slotExists
+    },
+    generateSlots () {
+      let slots = []
+      for (let i = 8; i < 18; i++) {
+        slots.push({
+            slot: i + ':00 - ' + i + ':15',
+            bettor: '',
+            amount: '',
+            subject: "Alex",
+            id: ''
+          })
+        slots.push({
+          slot: i + ':15 - ' + i + ':30',
+          bettor: "",
+          amount: "",
+          subject: "Alex",
+          id: ''
+        })
+        slots.push({
+          slot: i + ':30 - ' + i + ':45',
+          bettor: "",
+          amount: "",
+          subject: 'Alex',
+          id: ''
+        })
+        slots.push({
+          slot: i + ':45 - ' + (i + 1) + ':00',
+          bettor: "",
+          amount: "",
+          subject: "Alex",
+          id: ''
+        })
+      }
+      return slots
     }
   },
   computed: {
