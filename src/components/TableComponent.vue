@@ -26,9 +26,6 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field v-model="editedSlot.bettor" label="Wettender"></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedSlot.amount" label="Einsatz in €"></v-text-field>
-                  </v-col>
                 </v-row>
               </v-container>
             </v-card-text>

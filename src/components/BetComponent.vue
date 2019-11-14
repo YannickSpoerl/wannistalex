@@ -12,6 +12,9 @@
       <v-row class="pa-3 justify-center">
         <p class="display-1">aktiver Slot: <strong>{{activeSlot}}</strong></p>
       </v-row>
+      <v-row class="pa-3 justify-center">
+        <p class="display-1">Einsatz: <strong>1 €</strong></p>
+      </v-row>
       <v-stepper alt-labels class="mt-12" value=" ">
         <v-stepper-header>
           <v-stepper-step step="">
