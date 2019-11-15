@@ -32,23 +32,21 @@ export default {
   methods: {
       getLabel(index){
           switch(index){
-            case 0:
-                return '8:00'
             case 2:
-                return '10:30'
+                return '10:00'
             case 4:
-                return '13:00'
+                return '12:00'
             case 6:
-                return '15:30'
-            case 9:
-                return '18:00'
+                return '14:00'
+            case 8:
+                return '16:00'
           }
       }
   },
   computed: {
       value () {
         let values = []
-        for(let i = 0; i < 10; i++){
+        for(let i = 0; i < 11; i++){
             values.push(0)
         }
         this.bets.forEach(bet => {
