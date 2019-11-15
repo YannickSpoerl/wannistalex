@@ -47,7 +47,6 @@ export default {
   },
   computed: {
       value () {
-        let self = this
         let values = []
         for(let i = 0; i < 10; i++){
             values.push(0)

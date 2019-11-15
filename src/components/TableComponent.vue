@@ -19,11 +19,11 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="6">
                      <v-select v-model="editedSlot.slot" :items="slotList" item-text="slot" label="Zeitslot">
                      </v-select>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="6">
                     <v-text-field v-model="editedSlot.bettor" label="Wettender"></v-text-field>
                   </v-col>
                 </v-row>
@@ -84,8 +84,8 @@ import ChartComponent from './ChartComponent'
 
 export default {
   name: 'TableComponent',
-  props: ['bets', 'alreadyArrived'],
-   components: { ChartComponent },
+  props: ['bets', 'alreadyArrived', 'pot'],
+  components: { ChartComponent },
   data() {
       return {
           headers: [
@@ -208,43 +208,12 @@ export default {
       if(!this.bets){
         return []
       }
+      let allSlots = this.generateSlots()
       let slots = []
-      for (let i = 8; i < 18; i++) {
-        let hourSlots = [] 
-        hourSlots.push({
-            slot: i + ':00 - ' + i + ':15',
-            bettor: '',
-            amount: '',
-            subject: "Alex",
-            id: ''
-          })
-        hourSlots.push({
-          slot: i + ':15 - ' + i + ':30',
-          bettor: "",
-          amount: "",
-          subject: "Alex",
-          id: ''
-        })
-        hourSlots.push({
-          slot: i + ':30 - ' + i + ':45',
-          bettor: "",
-          amount: "",
-          subject: 'Alex',
-          id: ''
-        })
-        hourSlots.push({
-          slot: i + ':45 - ' + (i + 1) + ':00',
-          bettor: "",
-          amount: "",
-          subject: "Alex",
-          id: ''
-        })
-        let self = this
-        hourSlots.forEach(function(slot){
-          if(!self.checkSlotExistence(slot)){
-            slots.push(slot)
-          }
-        })
+      for (let i = 0; i < allSlots.length; i++) {
+        if(!this.checkSlotExistence(allSlots[i])){
+          slots.push(allSlots[i])
+        }
       }
       return slots
     },
@@ -269,13 +238,6 @@ export default {
         })
       })
       return array
-    },
-    pot () {
-      let pot = 0
-      this.bets.forEach(function(bet){
-        pot += parseInt(bet.amount)
-      })
-      return pot
     }
   }
 };

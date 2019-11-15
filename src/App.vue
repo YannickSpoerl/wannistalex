@@ -7,10 +7,10 @@
     <v-content>
       <v-row no-gutters>
         <v-col cols="6">
-          <TableComponent :bets="sortSlots(bets)" :alreadyArrived="alreadyArrived"></TableComponent>
+          <TableComponent :bets="sortSlots(bets)" :alreadyArrived="alreadyArrived" :pot="pot"></TableComponent>
         </v-col>
         <v-col cols="6">
-          <BetComponent :bets="sortSlots(bets)" :alreadyArrived="alreadyArrived"></BetComponent>
+          <BetComponent :bets="sortSlots(bets)" :alreadyArrived="alreadyArrived" :pot="pot"></BetComponent>
         </v-col>
       </v-row>
     </v-content>
@@ -82,6 +82,13 @@ export default {
       })
       return (todaysArrivals.length === 1)
     },
+    pot () {
+      let pot = 0
+      this.bets.forEach(function(bet){
+        pot += parseInt(bet.amount)
+      })
+      return pot
+    }
   }
 };
 </script>

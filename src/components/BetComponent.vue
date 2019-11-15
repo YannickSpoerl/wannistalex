@@ -55,7 +55,7 @@ import {db, TimeStamp} from '../db'
 
 export default {
   name: 'BetComponent',
-  props: ['bets', 'alreadyArrived'],
+  props: ['bets', 'alreadyArrived', 'pot'],
   data() { return {
     liveTime: '',
     timeCounter: undefined,
@@ -116,12 +116,14 @@ export default {
     },
     getNearestBetIndex(date) {
       let index = 0
+      let position = ''
       let distance = 86400000
       for(let i = 0; i < this.bets.length; i++) {
         let slot = this.bets[i].slot
         if(this.activeSlot === slot) {
           index = i
           distance = 0
+          position = 'in'
         } else {
           let startDate = new Date()
           let hours = slot.split(' - ')[0].split(':')[0]
@@ -137,16 +139,20 @@ export default {
             if(Math.abs(endDate - date) < distance){
               distance = Math.abs(endDate - date)
               index = i
+              position = 'before'
             }
           } else {
             if(Math.abs(startDate - date) < distance){
               distance = Math.abs(startDate - date)
               index = i
+              position ='after'
             }
           }
         }
       }
-      return index
+      return {
+        index: index, 
+        position: position}
     }
   },
   beforeMount(){
@@ -172,41 +178,59 @@ export default {
     previousBettor() {
       if(this.bets.length < 1){
         return {
-          bettor: 'Kein Gebote',
+          bettor: 'Keine Gebote',
           slot: ' '
         }
       }
-      if(this.nearestBettorIndex === 0){
+      if(this.nearestBettorIndex.index === 0){
         return {
           bettor: 'Kein vorhergehender Bieter',
           slot: ' '
         }
       }
-      return this.bets[this.nearestBettorIndex - 1]
+      if((this.nearestBettorIndex.position === 'in' || this.nearestBettorIndex.position === 'after') && this.nearestBettorIndex.index > 0) {
+        return this.bets[this.nearestBettorIndex.index - 1]
+      } else if (this.nearestBettorIndex.position === 'before') {
+        return this.bets[this.nearestBettorIndex.index]
+      }
     },
     currentBettor() {
+      let self = this
       if(this.bets.length < 1){
         return {
           bettor: 'Keine Gebote',
           slot: ' '
         }
       }
-      return this.bets[this.nearestBettorIndex]
+      let bet = {
+        bettor: 'Keine Wette',
+        slot: this.activeSlot
+      }
+      this.bets.forEach(function(element){
+        if(element.slot === self.activeSlot){
+          bet = element
+        }
+      })
+      return bet
     },
     nextBettor() {
-      if(this.bets.length < 1){
+     if(this.bets.length < 1){
         return {
           bettor: 'Keine Gebote',
           slot: ' '
         }
       }
-      if(this.nearestBettorIndex === (this.bets.length -1)){
+      if(this.nearestBettorIndex.index === this.bets.length - 1){
         return {
           bettor: 'Kein nachfolgender Bieter',
           slot: ' '
         }
       }
-      return this.bets[this.nearestBettorIndex + 1]
+      if(this.nearestBettorIndex.position === 'in' || this.nearestBettorIndex.position === 'before') {
+        return this.bets[this.nearestBettorIndex.index + 1]
+      } else if (this.nearestBettorIndex.position === 'after') {
+        return this.bets[this.nearestBettorIndex.index]
+      }
     },
     nearestBettorIndex() {
       return this.getNearestBetIndex(new Date())
@@ -215,18 +239,17 @@ export default {
       if(this.arrivalTime === undefined) {
         return ''
       }
-      if(this.bets.length < 1){
-        return {
+      let winningBet = {
           bettor: 'Niemand',
           slot: this.getSlot(this.arrivalTime)
         }
-      }
-      let now = new Date()
-      let hour = this.arrivalTime.split(':')[0]
-      let minutes = this.arrivalTime.split(':')[1]
-      now.setUTCHours(parseInt(hour))
-      now.setUTCMinutes(parseInt(minutes))
-      return this.bets[this.getNearestBetIndex(now)]
+      this.bets.forEach(function(element){
+        if(element.slot === winningBet.slot){
+          winningBet = element
+          return
+        }
+      })
+      return winningBet
     }
   }
 }
