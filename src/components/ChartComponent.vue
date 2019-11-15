@@ -34,13 +34,13 @@ export default {
           switch(index){
             case 0:
                 return '8:00'
-            case 9:
+            case 2:
                 return '10:30'
-            case 19:
+            case 4:
                 return '13:00'
-            case 28:
+            case 6:
                 return '15:30'
-            case 38:
+            case 9:
                 return '18:00'
           }
       }
@@ -49,19 +49,12 @@ export default {
       value () {
         let self = this
         let values = []
-        this.slots.forEach(element => {
-            let exists = false
-            self.bets.forEach(bet => {
-                if(bet.slot === element.slot) {
-                    exists = true
-                    return
-                }
-            })
-            if(exists) {
-                values.push(1)
-            } else {
-                values.push(0)
-            }
+        for(let i = 0; i < 10; i++){
+            values.push(0)
+        }
+        this.bets.forEach(bet => {
+            let index = parseInt(bet.slot.split(' - ')[0].split(':')[0])
+            values[index - 8] += 1
         })
         return values
       }

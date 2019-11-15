@@ -127,7 +127,7 @@ export default {
       this.editedSlot = {
             slot: "",
             bettor: "",
-            amount: "",
+            amount: "1",
             subject: "Alex",
             id: ''
           }
