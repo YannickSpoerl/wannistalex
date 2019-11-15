@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-data-table :headers="headers" :items="bets" class="elevation-1" hide-default-footer>
+    <v-data-table :headers="headers" :items="bets" class="elevation-1" hide-default-footer no-data-text="Keine Wetten abgegeben">
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-dialog v-model="editDialogOpen" max-width="600px">
@@ -63,7 +63,7 @@
           <p class="headline pa-2">€ Pot: <strong>{{pot}}</strong></p>
         </v-row>
         <v-row class="justify-center">
-          <v-data-table :headers="overvieHeaders" :items="overview" class="elevation-1" hide-default-footer></v-data-table>
+          <v-data-table :headers="overvieHeaders" :items="overview" class="elevation-1" hide-default-footer no-data-text="Keine Wetten abgegeben"></v-data-table>
         </v-row>
       </v-col>
       <v-col cols="6">
@@ -71,7 +71,7 @@
           <p class="headline pa-2"># Wetten: <strong>{{bets.length}}</strong></p>
         </v-row>
         <v-row class="justify-center">
-          <ChartComponent :bets="bets" :slots="generateSlots()"></ChartComponent>
+          <ChartComponent style="margin-right:0.8em" :bets="bets" :slots="generateSlots()"></ChartComponent>
         </v-row>
       </v-col>
     </v-row>
