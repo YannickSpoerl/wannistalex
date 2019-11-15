@@ -7,18 +7,15 @@
     :padding="padding"
     :line-width="width"
     :stroke-linecap="lineCap"
-    :gradient-direction="gradientDirection"
-    :fill="fill"
-    :type="type"
-    auto-draw
-  >
+    :fill="fill">
+      <template v-slot:label="item">
+            {{ getLabel(item.index) }}
+        </template>
     </v-sparkline>
     </v-card>
 </template>
 
 <script>
-import {db} from '../db'
-
 export default {
   name: 'ChartComponent',
   props: ['slots', 'bets'],
@@ -29,9 +26,23 @@ export default {
         padding: 8,
         lineCap: 'round',
         gradient: ['#009587'],
-        gradientDirection: 'top',
         fill: false,
-        type: 'trend',
+      }
+  },
+  methods: {
+      getLabel(index){
+          switch(index){
+            case 0:
+                return '8:00'
+            case 9:
+                return '10:30'
+            case 19:
+                return '13:00'
+            case 28:
+                return '15:30'
+            case 38:
+                return '18:00'
+          }
       }
   },
   computed: {
