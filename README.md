@@ -51,6 +51,7 @@ Following: https://cli.vuejs.org/guide/deployment.html#platform-guides
 
 ## Versioning
 
+- 1.0 - 17.11.19 - Finish implementation of main-screen
 - 0.1 - 13.11.19 - Initial working prototype
 
 ## License
