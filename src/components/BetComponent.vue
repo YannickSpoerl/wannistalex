@@ -15,6 +15,7 @@
       <v-row class="pa-3 justify-center">
         <p class="display-1">Einsatz: <strong>1 €</strong></p>
       </v-row>
+      <v-spacer style="padding-top:4.5em"></v-spacer>
       <v-stepper alt-labels class="mt-12" value=" ">
         <v-stepper-header>
           <v-stepper-step step="">
