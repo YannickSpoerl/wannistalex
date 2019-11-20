@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-app>
     <v-app-bar app color="primary" dark>
       <h1><s>Wo</s> Wann ist Alex?</h1>
       <v-spacer></v-spacer>
@@ -25,7 +25,7 @@
         </v-card-title>
       </v-card>
     </v-footer>
-  </div>
+  </v-app>
 </template>
 
 <script>
