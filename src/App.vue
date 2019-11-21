@@ -2,12 +2,12 @@
   <div id="app">
     <v-app>
       <v-app-bar app color="primary" dark>
-      <h1><s v-if="appBar().to !== '/'">Wo</s> {{ appBar().title }}</h1>
-      <v-spacer></v-spacer>
-      <v-btn icon :to="appBar().to">
-        <v-icon>{{appBar().icon}}</v-icon>
-      </v-btn>
-    </v-app-bar>
+        <h1><s v-if="appBar().to !== '/'">Wo</s> {{ appBar().title }}</h1>
+        <v-spacer></v-spacer>
+        <v-btn icon :to="appBar().to">
+          <v-icon>{{appBar().icon}}</v-icon>
+        </v-btn>
+      </v-app-bar>
       <router-view/>
       <v-footer dark padless height="auto">
       <v-card class="flex primary" flat tile>
