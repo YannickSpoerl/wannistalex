@@ -1,9 +1,5 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
-      <h1><s>Wo</s> Wann ist Alex?</h1>
-      <v-spacer></v-spacer>
-    </v-app-bar>
     <v-content>
       <v-row no-gutters>
         <v-col cols="6">
