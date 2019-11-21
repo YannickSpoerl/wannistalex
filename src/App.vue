@@ -2,10 +2,10 @@
   <div id="app">
     <v-app>
       <v-app-bar app color="primary" dark>
-      <h1><s>Wo</s> Wann ist Alex?</h1>
+      <h1><s v-if="appBar().to !== '/'">Wo</s> {{ appBar().title }}</h1>
       <v-spacer></v-spacer>
-      <v-btn icon :to="appBarButton().to">
-        <v-icon>{{appBarButton().icon}}</v-icon>
+      <v-btn icon :to="appBar().to">
+        <v-icon>{{appBar().icon}}</v-icon>
       </v-btn>
     </v-app-bar>
       <router-view/>
@@ -37,17 +37,19 @@ export default {
     }
   },
   methods: {
-    appBarButton () {
+    appBar () {
       switch(this.$route.name) {
         case 'admin':
           return {
             icon: 'fas fa-dice',
-            to: '/'
+            to: '/',
+            title: 'AdminPanel'
           }
         default:
           return {
             icon: 'fas fa-user-cog',
-            to: 'admin'
+            to: 'admin',
+            title: 'Wann ist Alex?'
           }
       }
     }

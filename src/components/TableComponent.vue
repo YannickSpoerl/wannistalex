@@ -63,7 +63,7 @@
           <p class="headline pa-2">€ Pot: <strong>{{pot}}</strong></p>
         </v-row>
         <v-row class="justify-center">
-          <v-data-table :headers="overvieHeaders" :items="overview" class="elevation-1" hide-default-footer no-data-text="Keine Wetten abgegeben"></v-data-table>
+          <v-data-table :headers="overviewHeaders" :items="overview" class="elevation-1" hide-default-footer no-data-text="Keine Wetten abgegeben"></v-data-table>
         </v-row>
       </v-col>
       <v-col cols="6">
@@ -92,7 +92,7 @@ export default {
             { text: 'Zeitslot', align: 'left', value: 'slot', sortable: false },
             { text: 'Wettender', value: 'bettor', sortable: false },
             { text: 'Aktion', value: 'action', sortable: false }],
-          overvieHeaders: [
+          overviewHeaders: [
             { text: 'Wettender', value: 'bettor', sortable: false },
             { text: 'Slots', value: 'numberOfSlots', sortable: true },
             { text: 'Gesamteinsatz in €', value: 'totalAmount', sortable: true }],
