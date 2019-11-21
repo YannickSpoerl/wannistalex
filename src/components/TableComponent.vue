@@ -9,7 +9,7 @@
             <v-btn color="primary" dark class="mb-2" v-on="on">
               <v-icon>fas fa-dice</v-icon>
                Neue Wette
-              </v-btn>
+            </v-btn>
             <v-spacer></v-spacer>
           </template>
           <v-card>
