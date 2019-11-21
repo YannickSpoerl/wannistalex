@@ -13,11 +13,43 @@ git clone https://github.com/YannickSpoerl/wannistalex
 
 ### Prerequisites
 
-You need Vue-CLI to work on this project.
+- You need Vue-CLI to work on this project.
 
 ```
 npm install -g @vue/cli
 ```
+
+- Create firebase-app and instert configuration into `db.js`
+
+- Create *collection* `bets` in firebase and insert sample *document*
+```
+{   amount: "3"
+    bettor: "Person A"
+    id: ""
+    slot: "17:45 - 18:00"
+    subject: "Person B"  }
+```
+
+- Create *collection* `arrivals` in firebase and insert sample *document* 
+```
+{   subject: "Person B"
+    time: 21. November 2019 um 17:38:49 UTC+1   }
+```
+
+- Create *collection* `subjects` in firebase and insert sample *document* 
+```
+{   id: ""
+    jackpot: 3
+    subject: "Person B"  }
+```
+
+- Create *collection* `configuration` in firebase and insert sample *document* 
+```
+{   endTime: "11:00 Uhr"
+    id ""
+    slotSize: "30 min"
+    startTime: "18:00 Uhr"  }
+``` 
 
 ### Installing
 
