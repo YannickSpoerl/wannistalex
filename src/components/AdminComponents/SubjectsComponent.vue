@@ -38,7 +38,7 @@
                             </v-card-text>
                             <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="primary" @click="saveSubject(editedSubject)">Speichern</v-btn>
+                            <v-btn color="primary" :disabled="editedSubject.subject.replace(/\s/g, '') === ''" @click="saveSubject(editedSubject)">Speichern</v-btn>
                             <v-btn  @click="closeDialog">Abbrechen</v-btn>
                             </v-card-actions>
                         </v-card>
@@ -70,7 +70,6 @@ export default {
      name: 'SubjectsComponent',
     data: () => ({
         editDialogOpen: false,
-        arrivals: [],
         subjects: [],
         subjectsHeaders: [
             { text: 'Erwartete Person', value: 'subject', sortable: false },
@@ -79,7 +78,6 @@ export default {
         editedSubject: undefined
     }),
     firestore: {
-        arrivals: db.collection('arrivals'),
         subjects: db.collection('subjects')
     },
     beforeMount(){
