@@ -21,10 +21,9 @@ const routes = [
       let currentUser = firebase.auth().currentUser
       if(!currentUser){
         const provider = new firebase.auth.GoogleAuthProvider()
-        firebase.auth().signInWithPopup(provider).then(function() {
-          currentUser = firebase.auth().currentUser
-          if (currentUser && currentUser.email === 'spoerlyannick@gmail.com') {
-            next()
+        firebase.auth().signInWithPopup(provider).then(function(user) {
+          if (user && user.user.email === 'spoerlyannick@gmail.com') {
+            next('admin')
           } else {
             next('/')
           }

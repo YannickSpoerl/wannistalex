@@ -19,7 +19,7 @@ git clone https://github.com/YannickSpoerl/wannistalex
 npm install -g @vue/cli
 ```
 
-- Create firebase-app and instert configuration into `db.js`
+- Create firebase-app and insert configuration into `db.js`
 
 - Create *collection* `bets` in firebase and insert sample *document*
 ```
