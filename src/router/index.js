@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../components/Home.vue'
-import AdminPanel from '../components/AdminPanel.vue'
+import AdminPanel from '../components/AdminComponents/AdminPanel.vue'
+import firebase from 'firebase'
 
 Vue.use(VueRouter)
 
@@ -14,7 +15,26 @@ const routes = [
   {
     path: '/admin',
     name: 'admin',
-    component: AdminPanel
+    component: AdminPanel,
+    beforeEnter: (to, from, next) => {
+      let currentUser = firebase.auth().currentUser
+      if(!currentUser){
+        const provider = new firebase.auth.GoogleAuthProvider()
+        firebase.auth().signInWithPopup(provider).then(function() {
+          currentUser = firebase.auth().currentUser
+          if (currentUser && currentUser.email === 'spoerlyannick@gmail.com') {
+            next()
+          } else {
+            next('/')
+          }
+        })
+      } 
+      if(currentUser && currentUser.email === 'spoerlyannick@gmail.com'){
+        next()
+      } else {
+        next('/')
+      }
+    }
   }
 ]
 

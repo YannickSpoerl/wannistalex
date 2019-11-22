@@ -47,7 +47,7 @@ export default {
           }
         default:
           return {
-            icon: 'fas fa-user-cog',
+            icon: 'fas fa-cog',
             to: 'admin',
             title: 'Wann ist Alex?'
           }

@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import SubjectsComponent from './AdminComponents/SubjectsComponent'
+import SubjectsComponent from './SubjectsComponent'
 import { db } from '@/db'
 
 export default {
