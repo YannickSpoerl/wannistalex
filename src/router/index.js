@@ -2,7 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../components/Home.vue'
 import AdminPanel from '../components/AdminComponents/AdminPanel.vue'
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/auth'
 
 Vue.use(VueRouter)
 
