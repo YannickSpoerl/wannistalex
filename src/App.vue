@@ -29,6 +29,7 @@ export default {
   data: function() {
     return {
       icons: [
+                { icon: 'fas fa-code', link: 'https://github.com/YannickSpoerl/wannistalex' },
                 { icon: 'fab fa-vuejs', link: "https://vuejs.org/"},
                 { icon: 'fas fa-user', link: "http://yannickspoerl.me" },
                 { icon: 'fab fa-github', link: "https://github.com/YannickSpoerl" },
