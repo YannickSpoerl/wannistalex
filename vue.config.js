@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: '/wannistalex/',
+  publicPath: '/',
   "transpileDependencies": [
     "vuetify"
   ],
