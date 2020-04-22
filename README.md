@@ -1,7 +1,7 @@
 # Wann ist Alex?
 
 Bet on the time your coworkers will show up to work!
-Showcase: http://yannickspoerl.me/wannistalex/
+Showcase: https://wannistalex.yannickspoerl.de
 
 ## Getting Started
 
