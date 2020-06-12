@@ -17,6 +17,7 @@
             <v-icon size="24px">{{ icon.icon }}</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
+          <span>version {{ version }}</span>
         </v-card-title>
       </v-card>
     </v-footer>
@@ -24,6 +25,8 @@
   </div>
 </template>
 <script>
+import { version } from '../package.json';
+
 export default {
   name: 'App',
   data: function() {
@@ -53,6 +56,11 @@ export default {
             title: 'Wann ist Alex?'
           }
       }
+    }
+  },
+  computed: {
+    version () {
+      return version
     }
   }
 }

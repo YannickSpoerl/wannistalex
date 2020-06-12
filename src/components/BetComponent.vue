@@ -194,6 +194,7 @@ export default {
       } else if (this.nearestBettorIndex.position === 'before') {
         return this.bets[this.nearestBettorIndex.index]
       }
+      return null
     },
     currentBettor() {
       let self = this
@@ -232,6 +233,7 @@ export default {
       } else if (this.nearestBettorIndex.position === 'after') {
         return this.bets[this.nearestBettorIndex.index]
       }
+      return null
     },
     nearestBettorIndex() {
       return this.getNearestBetIndex(new Date())
